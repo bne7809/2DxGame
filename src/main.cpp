@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 
 #include "defs.h"
+#include "timer.h"
 #include "shader.h"
 #include "sprite_sheet.h"
 #include "arena.h"
@@ -15,6 +16,8 @@
 
 #include "global_defs.cpp"
 
+#include "timer.cpp"
+#include "entity.cpp"
 #include "tex_load.cpp"
 #include "shader.cpp"
 #include "sprite_sheet.cpp"
@@ -51,6 +54,8 @@ void WinMainCRTStartup()
 			DispatchMessage(&msg);
 		}
 
+		g_timer.tick();
+
 		for (int i = 0; i < g_ib.num_cmds; ++i)
 		{
 		}
@@ -74,5 +79,6 @@ finish:
 
 	free_globals();
 	free_dx_globals();
+	CoUninitialize();
 	ExitProcess(0);
 }

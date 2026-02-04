@@ -11,8 +11,8 @@ ID3D11SamplerState *g_sampler;
 
 IWICImagingFactory *g_img_factory;
 
+timer g_timer;
 mem_arena *g_arena;
-
 input_buffer g_ib;
 linker g_linker;
 

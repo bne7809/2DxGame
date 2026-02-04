@@ -92,6 +92,8 @@ void load_globals()
 {
 	g_proc_heap = GetProcessHeap();
 
+	timer_init(&g_timer);
+
 	g_ib.buff[0] = entity_cmd::NOTHING;
 	g_ib.buff[1] = entity_cmd::NOTHING;
 	g_ib.buff[2] = entity_cmd::NOTHING;
