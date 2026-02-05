@@ -15,6 +15,7 @@
 #include "input_buffer.h"
 
 #include "global_defs.cpp"
+#include "global_data.cpp"
 
 #include "timer.cpp"
 #include "entity.cpp"
@@ -43,6 +44,9 @@ void WinMainCRTStartup()
 	init_pixel_shader(&ps, L"shader_out/def_tex_sample_ps.cso");
 	create_sprite_sheet(&ss, L"res/char_a_p1_0bas_humn_v00.png", 8, 8, 2.0f);
 
+	anim_entity ae;
+	init_anim_entity(&ae, g_player_anim, gf_player_anim_conv, anim_type::RUN_RIGHT);
+
 	MSG msg;
 	while (true)
 	{
@@ -62,11 +66,13 @@ void WinMainCRTStartup()
 
 		G_IBUFF_CLEAR;
 
+		ae.update((int)(g_timer.delta * 1000.0f));
+
 		g_con->ClearRenderTargetView(g_target, col);
 
 		vs.bind();
 		ps.bind();
-		ss.render(4, 6, 100.0f, 100.0f);
+		ss.render(ae.get_row(), ae.get_col(), 100.0f, 100.0f);
 
 		g_swap->Present(1, 0);
 		g_con->OMSetRenderTargets(1u, &g_target, nullptr);

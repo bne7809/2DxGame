@@ -1,3 +1,29 @@
+void init_anim_entity(anim_entity *ae, int *d, anim_conv_func cf, anim_type t)
+{
+	ae->data = d;
+	ae->conv_func = cf;
+	ae->curr = t;
+
+	int index = d[cf(t)];
+	ae->nframes = d[index++];
+	ae->row = d[index++];
+	ae->curr_index = 0;
+	ae->ftime = 0;
+	ae->frames = &d[index];
+	ae->delays = &d[index + ae->nframes];
+}
+
+void anim_entity::update(int dt)
+{
+	if (ftime >= delays[curr_index])
+	{
+		curr_index = (curr_index + 1) % nframes;
+		ftime = 0;
+	} else {
+		ftime += dt;
+	}
+}
+
 bool entity::translate_cmd(entity_cmd cmd)
 {
 	switch (cmd)

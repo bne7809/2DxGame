@@ -17,8 +17,41 @@ enum class anim_type
 	WALK_LEFT,
 	WALK_UP,
 	WALK_DOWN,
-	IDLE
+
+	IDLE_RIGHT,
+	IDLE_LEFT,
+	IDLE_UP,
+	IDLE_DOWN,
+
+	RUN_RIGHT,
+	RUN_LEFT,
+	RUN_UP,
+	RUN_DOWN
 };
+
+typedef int (*anim_conv_func)(anim_type t);
+
+struct anim_entity
+{
+	int *data;
+	anim_conv_func conv_func;
+
+	anim_type curr;
+
+	int nframes;
+	int row;
+	int curr_index;
+	int ftime;
+	int *frames;
+	int *delays;
+
+	inline int get_row() { return row; }
+	inline int get_col() { return frames[curr_index]; }
+
+	void update(int dt);
+};
+
+void init_anim_entity(anim_entity *ae, int *d, anim_conv_func cf, anim_type t);
 
 #define ENTITY_STATE_LOOK_RIGHT	1
 #define ENTITY_STATE_LOOK_LEFT	2
