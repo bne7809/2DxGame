@@ -27,7 +27,6 @@ struct entity
 	float vx;
 	float vy;
 
-	void reset();
 	void translate_cmd(entity_cmd cmd);
 };
 

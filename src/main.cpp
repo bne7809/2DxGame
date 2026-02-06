@@ -58,22 +58,23 @@ void WinMainCRTStartup()
 		g_timer.tick();
 
 		if (g_key_states['W'])
-			ib.push(entity_cmd::MV_UP);
+			ib.push_no_rep(entity_cmd::MV_UP);
+		else
+			ib.remove(entity_cmd::MV_UP);
 		if (g_key_states['S'])
-			ib.push(entity_cmd::MV_DOWN);
+			ib.push_no_rep(entity_cmd::MV_DOWN);
+		else
+			ib.remove(entity_cmd::MV_DOWN);
 		if (g_key_states['D'])
-			ib.push(entity_cmd::MV_RIGHT);
+			ib.push_no_rep(entity_cmd::MV_RIGHT);
+		else
+			ib.remove(entity_cmd::MV_RIGHT);
 		if (g_key_states['A'])
-			ib.push(entity_cmd::MV_LEFT);
+			ib.push_no_rep(entity_cmd::MV_LEFT);
+		else
+			ib.remove(entity_cmd::MV_LEFT);
 
-		ae.reset();
-
-		for (int i = 0; i < ib.num_cmds; ++i)
-		{
-			ae.translate_cmd(ib.buff[i]);
-		}
-
-		ib.num_cmds = 0;
+		ae.translate_cmd(ib.top());
 
 		ae.update(g_timer.delta);
 

@@ -72,11 +72,6 @@ void anim_entity::update(float dt)
 	y += ymul * vy * dt;
 }
 
-void entity::reset()
-{
-	BIT_OFF(state, ENTITY_STATE_MOVING);
-}
-
 void entity::translate_cmd(entity_cmd cmd)
 {
 	switch (cmd)
@@ -98,6 +93,7 @@ void entity::translate_cmd(entity_cmd cmd)
 		BIT_ON(state, ENTITY_STATE_MOVING);
 		return;
 	default:
+		BIT_OFF(state, ENTITY_STATE_MOVING);
 		return;
 	}
 }
