@@ -1,4 +1,4 @@
-void init_pixel_shader(pixel_shader *s, LPCWSTR ps_file)
+pixel_shader::pixel_shader(LPCWSTR ps_file)
 {
 	ID3DBlob *pblob;
 
@@ -8,7 +8,7 @@ void init_pixel_shader(pixel_shader *s, LPCWSTR ps_file)
         return;
     }
 
-	g_dev->CreatePixelShader(pblob->GetBufferPointer(), pblob->GetBufferSize(), nullptr, &s->ps);
+	g_dev->CreatePixelShader(pblob->GetBufferPointer(), pblob->GetBufferSize(), nullptr, &ps);
 
 	pblob->Release();
 }
@@ -18,13 +18,13 @@ void pixel_shader::bind()
 	g_con->PSSetShader(ps, nullptr, 0);
 }
 
-void destroy_pixel_shader(pixel_shader *s)
+void pixel_shader::release()
 {
-	s->ps->Release();
-	s->ps = nullptr;
+	ps->Release();
+	ps = nullptr;
 }
 
-void init_vertex_shader(vertex_shader *s, LPCWSTR vs_file, UINT mode)
+vertex_shader::vertex_shader(LPCWSTR vs_file, UINT mode)
 {
 	ID3DBlob *vblob;
 
@@ -54,9 +54,9 @@ void init_vertex_shader(vertex_shader *s, LPCWSTR vs_file, UINT mode)
 		break;
 	}
 
-	hr = g_dev->CreateVertexShader(vblob->GetBufferPointer(), vblob->GetBufferSize(), nullptr, &s->vs);
+	hr = g_dev->CreateVertexShader(vblob->GetBufferPointer(), vblob->GetBufferSize(), nullptr, &vs);
 	if (FAILED(hr)) { MessageBox(g_hwnd, L"CreateVertexShader failed", nullptr, 0); }
-	hr = g_dev->CreateInputLayout(elem_desc, n, vblob->GetBufferPointer(), vblob->GetBufferSize(), &s->layout);
+	hr = g_dev->CreateInputLayout(elem_desc, n, vblob->GetBufferPointer(), vblob->GetBufferSize(), &layout);
 	if (FAILED(hr)) { MessageBox(g_hwnd, L"CreateInputLayout failed", nullptr, 0); }
 
 	g_arena->pop(n * sizeof(D3D11_INPUT_ELEMENT_DESC));
@@ -69,10 +69,10 @@ void vertex_shader::bind()
 	g_con->IASetInputLayout(layout);
 }
 
-void destroy_vertex_shader(vertex_shader *s)
+void vertex_shader::release()
 {
-	s->vs->Release();
-	s->layout->Release();
-	s->vs = nullptr;
-	s->layout = nullptr;
+	vs->Release();
+	layout->Release();
+	vs = nullptr;
+	layout = nullptr;
 }

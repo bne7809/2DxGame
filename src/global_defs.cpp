@@ -13,8 +13,9 @@ IWICImagingFactory *g_img_factory;
 
 timer g_timer;
 mem_arena *g_arena;
-input_buffer g_ib;
 linker g_linker;
+
+bool g_key_states[256];
 
 LRESULT CALLBACK gf_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -34,42 +35,14 @@ LRESULT CALLBACK gf_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 				PostQuitMessage(0);
 				break;
 			}
-			switch (wParam)
-			{
-			case 'W':
-				g_ib.push(entity_cmd::MV_UP);
-				break;
-			case 'A':
-				g_ib.push(entity_cmd::MV_LEFT);
-				break;
-			case 'S':
-				g_ib.push(entity_cmd::MV_DOWN);
-				break;
-			case 'D':
-				g_ib.push(entity_cmd::MV_RIGHT);
-				break;
-			}
 		}
+		g_key_states[wParam] = true;
 	}
 		break;
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 	{
-		switch (wParam)
-		{
-		case 'W':
-			g_ib.push(entity_cmd::ST_UP);
-			break;
-		case 'A':
-			g_ib.push(entity_cmd::ST_LEFT);
-			break;
-		case 'S':
-			g_ib.push(entity_cmd::ST_DOWN);
-			break;
-		case 'D':
-			g_ib.push(entity_cmd::ST_RIGHT);
-			break;
-		}
+		g_key_states[wParam] = false;
 	}
 		break;
 	default:

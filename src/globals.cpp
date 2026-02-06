@@ -94,16 +94,6 @@ void load_globals()
 
 	timer_init(&g_timer);
 
-	g_ib.buff[0] = entity_cmd::NOTHING;
-	g_ib.buff[1] = entity_cmd::NOTHING;
-	g_ib.buff[2] = entity_cmd::NOTHING;
-	g_ib.buff[3] = entity_cmd::NOTHING;
-	g_ib.buff[4] = entity_cmd::NOTHING;
-
-	g_ib.index = 0;
-
-	SecureZeroMemory(&g_linker, sizeof(linker));
-
 	g_arena = arena_create(MiB(12));
 }
 

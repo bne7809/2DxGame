@@ -1,3 +1,12 @@
+enum class entity_cmd
+{
+	NOTHING,
+	MV_RIGHT,
+	MV_LEFT,
+	MV_UP,
+	MV_DOWN,
+};
+
 struct input_buffer
 {
 	entity_cmd buff[5];
@@ -8,7 +17,5 @@ struct input_buffer
 	};
 
 	void push(entity_cmd c);
+	inline entity_cmd pop() { return buff[--index]; }
 };
-
-#define G_IBUFF_EMPTY	(g_ib.index == 0)
-#define G_IBUFF_CLEAR	g_ib.index = 0

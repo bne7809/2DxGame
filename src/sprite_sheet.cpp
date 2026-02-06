@@ -1,22 +1,22 @@
-void create_sprite_sheet(sprite_sheet *ss, LPCWSTR file, UINT num_x, UINT num_y, float scale)
+sprite_sheet::sprite_sheet(LPCWSTR file, UINT num_x, UINT num_y, float scale)
 {
-	ss->fracw = 1.0f / num_x;
-	ss->frach = 1.0f / num_y;
+	fracw = 1.0f / num_x;
+	frach = 1.0f / num_y;
 
 	UINT rwidth, rheight;
-	load_tex_from_file(file, &ss->srv, &rwidth, &rheight);
+	load_tex_from_file(file, &srv, &rwidth, &rheight);
 
-	float width = rwidth * scale * ss->fracw;
-	float height = rheight * scale * ss->frach;
+	float width = rwidth * scale * fracw;
+	float height = rheight * scale * frach;
 
 	float vertices[] = {
 		0.0f, 0.0f, 0.0f, 0.0f,
-		width, 0.0f, ss->fracw, 0.0f,
-		0.0f, height, 0.0f, ss->frach,
+		width, 0.0f, fracw, 0.0f,
+		0.0f, height, 0.0f, frach,
 
-		width, 0.0f, ss->fracw, 0.0f,
-		width, height, ss->fracw, ss->frach,
-		0.0f, height, 0.0f, ss->frach
+		width, 0.0f, fracw, 0.0f,
+		width, height, fracw, frach,
+		0.0f, height, 0.0f, frach
 	};
 
 	D3D11_BUFFER_DESC vb_desc = {};
@@ -27,7 +27,7 @@ void create_sprite_sheet(sprite_sheet *ss, LPCWSTR file, UINT num_x, UINT num_y,
 	D3D11_SUBRESOURCE_DATA vdata = {};
 	vdata.pSysMem = vertices;
 
-	g_dev->CreateBuffer(&vb_desc, &vdata, &ss->vert_buff);
+	g_dev->CreateBuffer(&vb_desc, &vdata, &vert_buff);
 
 	D3D11_BUFFER_DESC cb_desc = {};
 	cb_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -35,7 +35,7 @@ void create_sprite_sheet(sprite_sheet *ss, LPCWSTR file, UINT num_x, UINT num_y,
 	cb_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-	g_dev->CreateBuffer(&cb_desc, nullptr, &ss->const_buff);
+	g_dev->CreateBuffer(&cb_desc, nullptr, &const_buff);
 }
 
 void sprite_sheet::render(UINT row, UINT col, float x, float y)
@@ -67,12 +67,12 @@ void sprite_sheet::render(UINT row, UINT col, float x, float y)
 	g_con->Draw(6, 0);
 }
 
-void destroy_sprite_sheet(sprite_sheet *ss)
+void sprite_sheet::release()
 {
-	ss->srv->Release();
-	ss->vert_buff->Release();
-	ss->const_buff->Release();
-	ss->srv = nullptr;
-	ss->vert_buff = nullptr;
-	ss->const_buff = nullptr;
+	srv->Release();
+	vert_buff->Release();
+	const_buff->Release();
+	srv = nullptr;
+	vert_buff = nullptr;
+	const_buff = nullptr;
 }
