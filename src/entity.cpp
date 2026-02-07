@@ -26,17 +26,41 @@ void anim_entity::update(float dt)
 	{
 		if (dir_state == ENTITY_STATE_LOOK_UP)
 		{
-			ymul = -1.0f;
-			curr_anim = anim_type::WALK_UP;
+			if (IS_BIT(state, ENTITY_STATE_RUNNING))
+			{
+				ymul = -2.0f;
+				curr_anim = anim_type::RUN_UP;
+			} else {
+				ymul = -1.0f;
+				curr_anim = anim_type::WALK_UP;
+			}
 		} else if (dir_state == ENTITY_STATE_LOOK_DOWN) {
-			ymul = 1.0f;
-			curr_anim = anim_type::WALK_DOWN;
+			if (IS_BIT(state, ENTITY_STATE_RUNNING))
+			{
+				ymul = 2.0f;
+				curr_anim = anim_type::RUN_DOWN;
+			} else {
+				ymul = 1.0f;
+				curr_anim = anim_type::WALK_DOWN;
+			}
 		} else if (dir_state == ENTITY_STATE_LOOK_RIGHT) {
-			xmul = 1.0f;
-			curr_anim = anim_type::WALK_RIGHT;
+			if (IS_BIT(state, ENTITY_STATE_RUNNING))
+			{
+				xmul = 2.0f;
+				curr_anim = anim_type::RUN_RIGHT;
+			} else {
+				xmul = 1.0f;
+				curr_anim = anim_type::WALK_RIGHT;
+			}
 		} else if (dir_state == ENTITY_STATE_LOOK_LEFT) {
-			xmul = -1.0f;
-			curr_anim = anim_type::WALK_LEFT;
+			if (IS_BIT(state, ENTITY_STATE_RUNNING))
+			{
+				xmul = -2.0f;
+				curr_anim = anim_type::RUN_LEFT;
+			} else {
+				xmul = -1.0f;
+				curr_anim = anim_type::WALK_LEFT;
+			}
 		}
 	} else {
 		if (dir_state == ENTITY_STATE_LOOK_UP)
@@ -91,6 +115,12 @@ void entity::translate_cmd(entity_cmd cmd)
 	case entity_cmd::MV_DOWN:
 		state = ((-4) & state) | ENTITY_STATE_LOOK_DOWN;
 		BIT_ON(state, ENTITY_STATE_MOVING);
+		return;
+	case entity_cmd::RUN:
+		BIT_ON(state, ENTITY_STATE_RUNNING);
+		return;
+	case entity_cmd::ST_RUN:
+		BIT_OFF(state, ENTITY_STATE_RUNNING);
 		return;
 	default:
 		BIT_OFF(state, ENTITY_STATE_MOVING);

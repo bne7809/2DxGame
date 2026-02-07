@@ -9,6 +9,12 @@ void input_buffer::push_no_rep(entity_cmd c)
 		buff[index++] = c;
 }
 
+void input_buffer::push(entity_cmd c)
+{
+	if(index < INPUT_BUFFER_MAX)
+		buff[index++] = c;
+}
+
 entity_cmd input_buffer::top()
 {
 	if (num_cmds > 0)

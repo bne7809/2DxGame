@@ -37,6 +37,7 @@ void WinMainCRTStartup()
 	float col[] = { 0.4706f, 0.3176f, 0.6627f, 1.0f };
 
 	input_buffer ib = {};
+	input_buffer mib = {};
 
 	vertex_shader vs(L"shader_out/anim_sprite_vs.cso", VERT_SHADER_MODE_POSTEX);
 	pixel_shader ps(L"shader_out/def_tex_sample_ps.cso");
@@ -74,7 +75,15 @@ void WinMainCRTStartup()
 		else
 			ib.remove(entity_cmd::MV_LEFT);
 
+		if (g_key_states['K'])
+			mib.push(entity_cmd::RUN);
+		else
+			mib.push(entity_cmd::ST_RUN);
+
 		ae.translate_cmd(ib.top());
+		ae.translate_cmd(mib.top());
+
+		mib.num_cmds = 0;
 
 		ae.update(g_timer.delta);
 

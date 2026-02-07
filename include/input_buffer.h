@@ -5,6 +5,8 @@ enum class entity_cmd
 	MV_LEFT,
 	MV_UP,
 	MV_DOWN,
+	RUN,
+	ST_RUN
 };
 
 #define INPUT_BUFFER_MAX	5
@@ -19,6 +21,7 @@ struct input_buffer
 	};
 
 	void push_no_rep(entity_cmd c);
+	void push(entity_cmd c);
 	void remove(entity_cmd c);
 
 	entity_cmd top();

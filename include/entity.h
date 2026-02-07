@@ -59,3 +59,4 @@ struct anim_entity : entity
 #define ENTITY_STATE_LOOK_UP	2
 #define ENTITY_STATE_LOOK_LEFT	3
 #define ENTITY_STATE_MOVING		2
+#define ENTITY_STATE_RUNNING	3
