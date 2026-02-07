@@ -2,4 +2,5 @@
 *.pdb
 *.rdi
 obj
+res
 shader_out
