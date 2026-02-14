@@ -6,15 +6,16 @@ mem_arena *arena_create(size_t capacity)
 	return ret;
 }
 
-void arena_destroy(mem_arena *arena)
+void mem_arena::release()
 {
-	HeapFree(g_proc_heap, 0, arena);
+	HeapFree(g_proc_heap, 0, this);
 }
 
 void *mem_arena::push(size_t size)
 {
-	size_t pos_aligned = CEIL_POW2(pos, 16);
-	size_t new_pos = pos_aligned + size;
+	size = CEIL_POW2(size, 16);
+	size_t pos_aligned = pos;
+	size_t new_pos = pos_aligned + size + sizeof(block_desc);
 
 	if (new_pos > capacity)
 	{
@@ -22,13 +23,48 @@ void *mem_arena::push(size_t size)
 		return NULL;
 	}
 
+	block_desc *desc = (block_desc *)((char *)this + new_pos - sizeof(block_desc));
+	desc->size = size;
+	desc->end = 0;
+
 	pos = new_pos;
 
 	return (char *)this + pos_aligned;
 }
 
-void mem_arena::pop(size_t size)
+void mem_arena::pop()
 {
-	size = min(size, pos - sizeof(mem_arena));
+	block_desc *desc = (block_desc *)((char *)this + pos - sizeof(block_desc));
+	size_t size = desc->size + sizeof(block_desc);
 	pos -= size;
+}
+
+void mem_arena::begin()
+{
+	size_t pos_aligned = pos;
+	size_t new_pos = pos_aligned + sizeof(block_desc);
+
+	if (new_pos > capacity)
+	{
+		MessageBox(g_hwnd, L"Mem Arena ran out of memory!", nullptr, 0);
+		return;
+	}
+
+	block_desc *desc = (block_desc *)((char *)this + pos_aligned);
+	desc->size = 0;
+	desc->end = 1;
+
+	pos = new_pos;
+}
+
+void mem_arena::end()
+{
+	while (1)
+	{
+		block_desc *desc = (block_desc *)((char *)this + pos - sizeof(block_desc));
+		size_t size = desc->size + sizeof(block_desc);
+		pos -= size;
+		if (desc->end)
+			break;
+	}
 }

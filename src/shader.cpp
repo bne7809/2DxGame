@@ -59,7 +59,7 @@ vertex_shader::vertex_shader(LPCWSTR vs_file, UINT mode)
 	hr = g_dev->CreateInputLayout(elem_desc, n, vblob->GetBufferPointer(), vblob->GetBufferSize(), &layout);
 	if (FAILED(hr)) { MessageBox(g_hwnd, L"CreateInputLayout failed", nullptr, 0); }
 
-	g_arena->pop(n * sizeof(D3D11_INPUT_ELEMENT_DESC));
+	g_arena->pop();
 	vblob->Release();
 }
 

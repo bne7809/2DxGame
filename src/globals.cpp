@@ -99,5 +99,5 @@ void load_globals()
 
 void free_globals()
 {
-	arena_destroy(g_arena);
+	g_arena->release();
 }

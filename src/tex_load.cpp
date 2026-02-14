@@ -45,7 +45,7 @@ void load_tex_from_file(LPCWSTR file, ID3D11ShaderResourceView **out_srv, UINT *
 	*out_w = width;
 	*out_h = height;
 
-	g_arena->pop(size);
+	g_arena->pop();
 	texture->Release();
 	converter->Release();
 	frame->Release();
