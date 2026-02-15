@@ -90,7 +90,7 @@ void free_dx_globals()
 
 void load_globals()
 {
-	g_arena = arena_create(MiB(12));
+	g_arena = mem_arena::create(MiB(12));
 }
 
 void free_globals()

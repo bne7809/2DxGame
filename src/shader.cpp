@@ -24,7 +24,7 @@ void pixel_shader::release()
 	ps = nullptr;
 }
 
-vertex_shader::vertex_shader(LPCWSTR vs_file, UINT mode)
+vertex_shader::vertex_shader(LPCWSTR vs_file, vshadermode mode)
 {
 	ID3DBlob *vblob;
 
@@ -39,12 +39,12 @@ vertex_shader::vertex_shader(LPCWSTR vs_file, UINT mode)
 
 	switch (mode)
 	{
-	case VERT_SHADER_MODE_POSTEX:
+		case vshadermode::POSTEX:
 		n = 1;
 		elem_desc = (D3D11_INPUT_ELEMENT_DESC *)g_arena->push(n * sizeof(D3D11_INPUT_ELEMENT_DESC));
 		elem_desc[0] = {"POSTEX", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
 		break;
-	case VERT_SHADER_MODE_POS:
+	case vshadermode::POS:
 		n = 1;
 		elem_desc = (D3D11_INPUT_ELEMENT_DESC *)g_arena->push(n * sizeof(D3D11_INPUT_ELEMENT_DESC));
 		elem_desc[0] = {"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};

@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <wincodec.h>
 #include <DirectXMath.h>
+#include <new>
 
 #include "defs.h"
 #include "timer.h"
@@ -13,6 +14,8 @@
 #include "arena.h"
 #include "entity.h"
 #include "linker.h"
+
+#include "pool.h"
 
 #include "global_defs.cpp"
 #include "global_data.cpp"
@@ -41,11 +44,13 @@ void WinMainCRTStartup()
 	input_buffer ib = {};
 	input_buffer mib = {};
 
-	vertex_shader vs(L"shader_out/anim_sprite_vs.cso", VERT_SHADER_MODE_POSTEX);
+	vertex_shader vs(L"shader_out/anim_sprite_vs.cso", vshadermode::POSTEX);
 	pixel_shader ps(L"shader_out/def_tex_sample_ps.cso");
 	sprite_sheet ss(L"res/char_a_p1_0bas_humn_v00.png", 8, 8, 2.0f);
+	
+	auto entities = pool<anim_entity>::create(10);
 
-	anim_entity ae(100.0f, 100.0f, 100.0f, 100.0f, g_player_anim, gf_player_anim_conv);
+	anim_entity *ae = new (entities->alloc()) anim_entity(100.0f, 100.0f, 100.0f, 100.0f, g_player_anim, gf_player_anim_conv);
 
 	MSG msg;
 	while (true)
@@ -82,18 +87,18 @@ void WinMainCRTStartup()
 		else
 			mib.push(entity_cmd::ST_RUN);
 
-		ae.translate_cmd(ib.top());
-		ae.translate_cmd(mib.top());
+		ae->translate_cmd(ib.top());
+		ae->translate_cmd(mib.top());
 
 		mib.num_cmds = 0;
 
-		ae.update(t);
+		ae->update(t);
 
 		g_con->ClearRenderTargetView(g_target, col);
 
 		vs.bind();
 		ps.bind();
-		ss.render(ae.get_row(), ae.get_col(), ae.x, ae.y);
+		ss.render(ae->get_row(), ae->get_col(), ae->x, ae->y);
 
 		g_swap->Present(1, 0);
 		g_con->OMSetRenderTargets(1u, &g_target, nullptr);

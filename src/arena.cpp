@@ -1,4 +1,4 @@
-mem_arena *arena_create(size_t capacity)
+mem_arena *mem_arena::create(size_t capacity)
 {
 	mem_arena *ret = (mem_arena *)HeapAlloc(GetProcessHeap(), 0, capacity);
 	ret->capacity = capacity;

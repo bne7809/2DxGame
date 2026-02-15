@@ -9,6 +9,8 @@ struct mem_arena
 	void begin();
 	void end();
 
+	static mem_arena *create(size_t capacity);
+
 	void release();
 };
 
@@ -17,5 +19,3 @@ struct block_desc
 	size_t size;
 	size_t end;
 };
-
-mem_arena *arena_create(size_t capacity);

@@ -8,12 +8,15 @@ struct pixel_shader
 	void release();
 };
 
-#define VERT_SHADER_MODE_POSTEX	0
-#define VERT_SHADER_MODE_POS	1
+enum class vshadermode
+{
+	POSTEX,
+	POS
+};
 
 struct vertex_shader
 {
-	vertex_shader(LPCWSTR vs_file, UINT mode);
+	vertex_shader(LPCWSTR vs_file, vshadermode mode);
 
 	ID3D11VertexShader *vs;
 	ID3D11InputLayout *layout;
