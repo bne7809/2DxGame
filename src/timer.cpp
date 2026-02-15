@@ -1,7 +1,7 @@
-void timer_init(timer *t)
+timer::timer()
 {
-	QueryPerformanceFrequency(&t->freq);
-	QueryPerformanceCounter(&t->last);
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&last);
 }
 
 void timer::tick()

@@ -1,5 +1,3 @@
-HANDLE g_proc_heap;
-
 HWND g_hwnd;
 
 IDXGISwapChain *g_swap;
@@ -11,7 +9,6 @@ ID3D11SamplerState *g_sampler;
 
 IWICImagingFactory *g_img_factory;
 
-timer g_timer;
 mem_arena *g_arena;
 linker g_linker;
 

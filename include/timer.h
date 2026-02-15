@@ -5,7 +5,9 @@ struct timer
 
 	float delta;
 
-	void tick();
-};
+	timer();
 
-void timer_init(timer *t);
+	void tick();
+
+	inline operator float() const { return delta; }
+};

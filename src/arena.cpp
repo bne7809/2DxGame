@@ -1,6 +1,6 @@
 mem_arena *arena_create(size_t capacity)
 {
-	mem_arena *ret = (mem_arena *)HeapAlloc(g_proc_heap, 0, capacity);
+	mem_arena *ret = (mem_arena *)HeapAlloc(GetProcessHeap(), 0, capacity);
 	ret->capacity = capacity;
 	ret->pos = sizeof(mem_arena);
 	return ret;
@@ -8,7 +8,7 @@ mem_arena *arena_create(size_t capacity)
 
 void mem_arena::release()
 {
-	HeapFree(g_proc_heap, 0, this);
+	HeapFree(GetProcessHeap(), 0, this);
 }
 
 void *mem_arena::push(size_t size)

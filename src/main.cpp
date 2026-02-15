@@ -34,6 +34,8 @@ void WinMainCRTStartup()
 	load_dx_globals();
 	load_globals();
 
+	timer t;
+
 	float col[] = { 0.4706f, 0.3176f, 0.6627f, 1.0f };
 
 	input_buffer ib = {};
@@ -43,7 +45,6 @@ void WinMainCRTStartup()
 	pixel_shader ps(L"shader_out/def_tex_sample_ps.cso");
 	sprite_sheet ss(L"res/char_a_p1_0bas_humn_v00.png", 8, 8, 2.0f);
 
-	entity camera = { 0.0f, 0.0f, 100.0f, 100.0f };
 	anim_entity ae(100.0f, 100.0f, 100.0f, 100.0f, g_player_anim, gf_player_anim_conv);
 
 	MSG msg;
@@ -57,7 +58,7 @@ void WinMainCRTStartup()
 			DispatchMessage(&msg);
 		}
 
-		g_timer.tick();
+		t.tick();
 
 		if (g_key_states['W'])
 			ib.push_no_rep(entity_cmd::MV_UP);
@@ -86,13 +87,13 @@ void WinMainCRTStartup()
 
 		mib.num_cmds = 0;
 
-		ae.update(g_timer.delta);
+		ae.update(t);
 
 		g_con->ClearRenderTargetView(g_target, col);
 
 		vs.bind();
 		ps.bind();
-		ss.render(ae.get_row(), ae.get_col(), ae.x - camera.x, ae.y - camera.y);
+		ss.render(ae.get_row(), ae.get_col(), ae.x, ae.y);
 
 		g_swap->Present(1, 0);
 		g_con->OMSetRenderTargets(1u, &g_target, nullptr);

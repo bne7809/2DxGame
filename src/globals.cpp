@@ -90,10 +90,6 @@ void free_dx_globals()
 
 void load_globals()
 {
-	g_proc_heap = GetProcessHeap();
-
-	timer_init(&g_timer);
-
 	g_arena = arena_create(MiB(12));
 }
 
