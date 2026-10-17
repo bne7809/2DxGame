@@ -3,6 +3,5 @@
 *.rdi
 *.sln
 obj
-res
 shader_out
 .vs
